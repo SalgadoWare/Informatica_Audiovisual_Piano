@@ -44,7 +44,7 @@ class Piano { //<>//
     
         int indexTecla = 0;
         for (int i=0 ; i < div ; i++) {
-          if (i*p <= maxx&& maxx<=(i+1)*p) {
+          if ((i*p) + x1 <= maxx&& maxx<=((i+1)*p)+x1) {
             indexTecla = i;
           }
         }

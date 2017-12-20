@@ -12,7 +12,7 @@ class Tecla {
   public Tecla (String song, Minim _minim) {
     minim = _minim;
     player = minim.loadFile(song);
-    altura = (2/3) * height;
+    altura = (2/3) * h;
   }
 
   public void tocar() {
@@ -22,8 +22,8 @@ class Tecla {
   }
 
   public void display(int collectionPosition) {
-    anchura = width * 1/7;
-    altura = height * 2/3;
+    anchura = w * 1/7;
+    altura = h * 2/3;
     x = collectionPosition*anchura;
     
     
@@ -34,6 +34,6 @@ class Tecla {
     else{
       fill(color(255, 255,0,10));
     }
-    rect(x, height - altura, anchura, altura);
+    rect(x+x1, h - altura, anchura, altura);
   }
 }
