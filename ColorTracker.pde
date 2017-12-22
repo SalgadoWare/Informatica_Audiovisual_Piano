@@ -1,5 +1,11 @@
 class ColorTracker {
 
+
+  float worldRecord = 1560;
+  int threshold = 2;
+  
+  
+
   // Array con las cordenadas x e y respectivamente
   int[] trackColor(Capture video) {
 
@@ -7,6 +13,7 @@ class ColorTracker {
     salida[0] = -1;
 
     float worldRecord = 500;
+
 
     // XY coordinate of closest color
     int closestX = 0;
@@ -40,11 +47,12 @@ class ColorTracker {
 
     // We only consider the color found if its color distance is less than 10. 
     // This threshold of 10 is arbitrary and you can adjust this number depending on how accurate you require the tracking to be.
-    if (worldRecord < 10) {
+    if (worldRecord < threshold) {
       // Draw a circle at the tracked pixel
       fill(trackColor);
       strokeWeight(4.0);
       stroke(0);
+      if(!showPiano)
       ellipse(closestX, closestY, 16, 16);
       salida[0] = closestX;
       salida[1] = closestY;
