@@ -1,10 +1,16 @@
-class Piano { //<>//
+class Piano { //<>// //<>//
 
   ArrayList<Tecla> teclas;
   Minim[] minims;
   String pianoKey = "pk", lastPianoKey = "lpk";
 
+  Tecla teclaTocada;
+  Tecla lastTeclaTocada;
+
   public Piano(Minim[] _minims) {
+
+    lastTeclaTocada = new Tecla("s.wav", _minims[1]);
+    teclaTocada = new Tecla("h.wav", _minims[5]);
 
     minims = _minims;
     teclas = new ArrayList<Tecla>();
@@ -16,7 +22,7 @@ class Piano { //<>//
     teclas.add(new Tecla("f.wav", minims[3]));
     teclas.add(new Tecla("g.wav", minims[4]));
     teclas.add(new Tecla("h.wav", minims[5]));
-    teclas.add(new Tecla("j.wav", minims[6])); //<>//
+    teclas.add(new Tecla("j.wav", minims[6]));
   }
 
   void display() {
@@ -29,48 +35,27 @@ class Piano { //<>//
   // metodo tocar de dicha tecla
   void tocar(int maxx) {
 
-    //detectar el cuadrante
-
-    //¿previamente se ha llamado a este cuadrante?
-    //sí -> no hacer nada
-    //no -> se tiene que llamar al método play
-
-    int i = 0;
-
-    for (i = 0; i < div; i++) {
-      if (i*p <=maxx && maxx <= (i+1)*p) {
-        switch (i) {
-        case 0:
-          pianoKey = "a";
-          break;
-        case 1:
-          pianoKey = "s";
-          break;
-        case 2:
-          pianoKey = "d";
-          break;
-        case 3:
-          pianoKey = "f";
-          break;
-        case 4:
-          pianoKey = "g";
-          break;
-        case 5:
-          pianoKey = "h";
-          break;
-        case 6:
-          pianoKey = "j";
-          break;
-        default:
-          break;
-        }
-        break;
+    if (maxx == -1) {
+      for (int i=0; i < teclas.size(); i++) {
+        teclas.get(i).tocada = false;
       }
-    }
+    } else {
 
-    if (!lastPianoKey.equalsIgnoreCase(pianoKey)) {
-      teclas.get(i).tocar();
-      lastPianoKey = pianoKey.toString();
+      int indexTecla = 0;
+      for (int i=0; i < total_notas; i++) {
+        if ((i*proporcion_relativa) + x1 <= maxx&& maxx<=((i+1)*proporcion_relativa)+x1) {
+          indexTecla = i;
+        }
+      }
+
+      lastTeclaTocada = teclaTocada;
+      teclaTocada = teclas.get(indexTecla);
+
+      if (!lastTeclaTocada.equals(teclaTocada)) {
+        lastTeclaTocada.tocada = false;
+        teclaTocada.tocada = true;
+        teclaTocada.tocar();
+      }
     }
   }
 }
