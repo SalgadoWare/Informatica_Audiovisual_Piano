@@ -22,9 +22,24 @@ ArrayList <Nota> notas = new ArrayList<Nota>();
 
 boolean mostrarNotas = false;
 
+int contadorFrame = 0;
+
+// Utilizado para la grabación de audio
+Minim minim;
+AudioInput in;
+AudioRecorder recorder;
+boolean recording = false;
+
+//-----------------Juego--------------------
+boolean modoJuego = false;
+Minim minimJuego;
+//------------------------------------------
+
+PFont f;
+
 void setup() {
 
-  size(1280, 720);
+  size(1280, 960);
 
   p = width/div; //proporcion
 
@@ -42,6 +57,17 @@ void setup() {
   tracker = new ColorTracker();
 
   piano = new Piano(minims);
+  
+  //---------------Juego------------------
+  minimJuego = new Minim(this);
+  //--------------------------------------
+
+  minim = new Minim(this);
+  in = minim.getLineIn(Minim.STEREO, 2048);
+  recorder = minim.createRecorder(in, "grabacionAudio.wav");
+
+  f = createFont("Arial",16,true); // Arial, 16 point, anti-aliasing on
+  textFont(f,36);
 }
 
 void captureEvent(Capture video) {
@@ -66,6 +92,10 @@ void draw() {
 
   piano.tocar(coordenadas[0]);
 
+  if (recording) {
+     fill(255);
+     text("Grabando audio (Pulsa g para finalizar)",100,100);
+  }
 
   if (showPiano) {
     mostrarNotas();
@@ -90,13 +120,43 @@ void keyPressed() {
   case RIGHT:
     tracker.worldRecord -= 10 ;
     break;
-
+    
+  //---------------------Juego---------------------
+  case 80: //letra p
+    if(modoJuego == false){
+      modoJuego = true;
+      piano.modoJuego = true;
+      piano.modoJuego(minimJuego);
+    }
+    else{
+      piano.modoJuego = false;
+      modoJuego = false;
+    }
+     break;
+     
+  //-------------------------------------------------
+  
+  case 67:
+    saveFrame("captura" + contadorFrame + ".png");
+  break;
+  
+  case 71:
+    if (recording) {
+      recording = false;
+      recorder.endRecord();
+    } else {
+      recording = true;
+      recorder.beginRecord();
+    }
+  break;
+  
   }
 
   if(key == 'n')
     mostrarNotas = true;
 
-  println(tracker.threshold +" " +tracker.worldRecord);
+   
+  //println(tracker.threshold +" " +tracker.worldRecord);
 }
 
 

@@ -8,10 +8,12 @@ class Tecla {
 
   private int altura, anchura;
   public int x, y;
+  public String song;
 
 
 
   public Tecla (String song, Minim _minim) {
+    this.song = song;
     minim = _minim;
     player = minim.loadFile(song);
     altura = (2/3) * h;
